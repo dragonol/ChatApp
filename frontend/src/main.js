@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import router from './router'
 import loginPage from './views/Login.vue'
-
 Vue.config.productionTip = false
 
 new Vue({

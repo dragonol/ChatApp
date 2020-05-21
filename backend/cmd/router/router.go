@@ -10,9 +10,9 @@ import (
 func InitRouter() *gin.Engine {
 	router := gin.Default()
 
-	router.Use(static.Serve("/", static.LocalFile("../../frontend/dist", false)))
+	router.Use(static.Serve("/", static.LocalFile("./../../frontend/dist", false)))
 
-	router.GET("/login", controllers.LoginPageHandler)
+	router.POST("/api/login", controllers.Login)
 	
 	return router
 }
