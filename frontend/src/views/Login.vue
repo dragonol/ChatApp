@@ -147,6 +147,13 @@ export default {
   methods: {
     changeScreen: function () {
       this.screenPhase = (this.screenPhase + 1) % 4
+      this.signIn_emptyField = false
+      this.signIn_incorrectField = false
+      this.signIn_invalidEmail = false
+      this.signUp_emptyField = false
+      this.signUp_usedEmail = false
+      this.signUp_invalidEmail = false
+      this.signUp_mismatchPassword = false
       const self = this
       setTimeout(function () {
         self.screenPhase = (self.screenPhase + 1) % 4
