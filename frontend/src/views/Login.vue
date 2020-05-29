@@ -6,7 +6,10 @@
         enter-active-class="animated bounceInDown"
         leave-active-class="animated bounceOutDown"
       >
-        <div v-if="screenPhase == 0" class="banner animation">
+        <div
+          v-if="screenPhase == 0"
+          class="banner animation"
+        >
           <h1>Welcome</h1>
 
           <p>Enter your information and join us on new journey!</p>
@@ -21,7 +24,10 @@
         enter-active-class="animated bounceInDown"
         leave-active-class="animated bounceOutDown"
       >
-        <div v-if="screenPhase == 2" class="banner animation">
+        <div
+          v-if="screenPhase == 2"
+          class="banner animation"
+        >
           <h1>Already have an account?</h1>
 
           <p>Sign in and start using Jusay</p>
@@ -39,29 +45,49 @@
         enter-active-class="animated bounceInUp"
         leave-active-class="animated bounceOutUp"
       >
-        <div v-if="screenPhase == 0" class="form animation">
+        <div
+          v-if="screenPhase == 0"
+          class="form animation"
+        >
           <i class="fas fa-comment-alt logo" />
 
           <h1>Sign in to Jusay</h1>
           <div class="form-message">
             <div class="message">
-              <p v-if="signIn_emptyField">Email or password must not be empty</p>
+              <p v-if="signIn_emptyField">
+                Email or password must not be empty
+              </p>
             </div>
             <div class="message">
-              <p v-if="signIn_invalidEmail">Email address is not valid</p>
+              <p v-if="signIn_invalidEmail">
+                Email address is not valid
+              </p>
             </div>
             <div class="message">
-              <p v-if="signIn_incorrectField">Email or password is incorrect</p>
+              <p v-if="signIn_incorrectField">
+                Email or password is incorrect
+              </p>
             </div>
           </div>
-          <form action method="post">
+          <form
+            action
+            method="post"
+          >
             <div class="input">
               <i class="fas fa-envelope" />
-              <input v-model="signIn_email" type="text" placeholder="Email" />
+              <input
+                v-model="signIn_email"
+                type="text"
+                placeholder="Email"
+              >
             </div>
             <div class="input">
               <i class="fas fa-lock" />
-              <input v-model="signIn_password" type="password" placeholder="Password" />
+              <input
+                v-model="signIn_password"
+                type="password"
+                placeholder="Password"
+              >
             </div>
           </form>
 
@@ -75,32 +101,54 @@
         enter-active-class="animated bounceInUp"
         leave-active-class="animated bounceOutUp"
       >
-        <div v-if="screenPhase == 2" class="form animation">
+        <div
+          v-if="screenPhase == 2"
+          class="form animation"
+        >
           <i class="fas fa-comment-alt logo" />
 
           <h1>Join Jusay</h1>
           <div class="form-message">
             <div class="message">
-              <p v-if="signUp_emptyField">Email or password must not be empty</p>
+              <p v-if="signUp_emptyField">
+                Email or password must not be empty
+              </p>
             </div>
             <div class="message">
-              <p v-if="signUp_invalidEmail">Email address is not valid</p>
+              <p v-if="signUp_invalidEmail">
+                Email address is not valid
+              </p>
             </div>
             <div class="message">
-              <p v-if="signUp_mismatchPassword">Confirm password does not match password</p>
+              <p v-if="signUp_mismatchPassword">
+                Confirm password does not match password
+              </p>
             </div>
             <div class="message">
-              <p v-if="signUp_usedEmail">This email is already taken</p>
+              <p v-if="signUp_usedEmail">
+                This email is already taken
+              </p>
             </div>
           </div>
-          <form action method="post">
+          <form
+            action
+            method="post"
+          >
             <div class="input">
               <i class="fas fa-envelope" />
-              <input v-model="signUp_email" type="text" placeholder="Email" />
+              <input
+                v-model="signUp_email"
+                type="text"
+                placeholder="Email"
+              >
             </div>
             <div class="input">
               <i class="fas fa-lock" />
-              <input v-model="signUp_password" type="password" placeholder="Password" />
+              <input
+                v-model="signUp_password"
+                type="password"
+                placeholder="Password"
+              >
             </div>
             <div class="input">
               <i class="fas fa-lock" />
@@ -108,7 +156,7 @@
                 v-model="signUp_confirmPassword"
                 type="password"
                 placeholder="Confirm Password"
-              />
+              >
             </div>
           </form>
 

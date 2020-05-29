@@ -24,7 +24,7 @@ func Register(c *gin.Context) {
 	// check if email exist in database
 	var result models.UserLogin
 	collection.FindOne(context.TODO(), bson.D{
-		{"email", c.PostForm("email")},
+		{Key: "email", Value: c.PostForm("email")},
 	}).Decode(&result)
 
 	if !result.IsEmpty() {
@@ -39,7 +39,7 @@ func Register(c *gin.Context) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	record := models.UserLogin{c.PostForm("email"), passwordHash}
+	record := models.UserLogin{Email: c.PostForm("email"), Password: passwordHash}
 
 	// insert to database
 	_, err = collection.InsertOne(context.TODO(), record)

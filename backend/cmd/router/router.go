@@ -1,9 +1,9 @@
 package router
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/gin-contrib/static"
 	controllers "../controllers"
+	"github.com/gin-contrib/static"
+	"github.com/gin-gonic/gin"
 )
 
 //InitRouter initialize router

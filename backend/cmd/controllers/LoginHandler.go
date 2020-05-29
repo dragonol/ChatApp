@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	mongodb "../db"
-	models "../models"
+	database "../db"
+	"../models"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"golang.org/x/crypto/bcrypt"
@@ -14,21 +14,20 @@ import (
 // Login :handler for /api/login
 func Login(c *gin.Context) {
 	// get database
-	db, err := mongodb.GetDatabase()
+	db, err := database.GetDatabase()
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
-	collection := db.Collection("users")
-
 	// check if email exist in database
+	collection := db.Collection("users")
 	var result models.UserLogin
-	collection.FindOne(context.TODO(), bson.D{
-		{"email", c.PostForm("email")},
+	err = collection.FindOne(context.TODO(), bson.D{
+		{Key: "email", Value: c.PostForm("email")},
 	}).Decode(&result)
 
 	// compare password hash
-	compareErr:= bcrypt.CompareHashAndPassword([]byte(result.Password), []byte(c.PostForm("password")))
+	compareErr := bcrypt.CompareHashAndPassword([]byte(result.Password), []byte(c.PostForm("password")))
 
 	// response
 	if compareErr != nil {
@@ -41,5 +40,3 @@ func Login(c *gin.Context) {
 		})
 	}
 }
-
-
