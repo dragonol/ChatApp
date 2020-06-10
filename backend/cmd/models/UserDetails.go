@@ -1,6 +1,9 @@
 package models
 
-import "go.mongodb.org/mongo-driver/bson/primitive"
+import (
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"time"
+)
 
 type UserDetails struct {
 	//Id primitive.ObjectID `bson:"_id" json:"id,omitempty"`
@@ -9,7 +12,7 @@ type UserDetails struct {
 	Password    []byte
 	PhoneNumber string
 	DisplayName string
-	DateOfBirth primitive.DateTime
+	DateOfBirth time.Time
 }
 
 func (u UserDetails) IsEmpty() bool {

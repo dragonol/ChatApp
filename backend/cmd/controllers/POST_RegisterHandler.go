@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"context"
-	"fmt"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"log"
 	"time"
@@ -20,10 +19,11 @@ func Register(c *gin.Context) {
 	userEmail := c.PostForm("email")
 	userPassword := c.PostForm("password")
 	userDisplayName := c.PostForm("displayName")
-	userDoB_d := c.PostForm("dob_d")
-	userDoB_m := c.PostForm("dob_m")
-	userDoB_y := c.PostForm("dob_y")
-	userDOB := time.Parse()
+	userDoB, err := time.Parse("20060102", c.PostForm("dob"))
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
 	userPhoneNumber := c.PostForm("phoneNumber")
 
 	// get database
@@ -34,9 +34,8 @@ func Register(c *gin.Context) {
 	}
 
 	// get collections
-	userAthenticate:= db.Collection("user_authenticate")
-	userDetails:= db.Collection("user_details")
-
+	userAthenticate := db.Collection("user_authenticate")
+	userDetails := db.Collection("user_details")
 
 	// check if email exist in database
 	var result models.UserAuthenticate
@@ -53,14 +52,14 @@ func Register(c *gin.Context) {
 	}
 
 	// hash password
-	passwordHash, err := bcrypt.GenerateFromPassword([]byte(c.PostForm("password")), 14)
+	passwordHash, err := bcrypt.GenerateFromPassword([]byte(userPassword), 14)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// create userAuthenticate record
 	registerRecord := models.UserAuthenticate{
-		Email: userEmail,
+		Email:    userEmail,
 		Password: passwordHash,
 	}
 
@@ -77,7 +76,12 @@ func Register(c *gin.Context) {
 		Password:    passwordHash,
 		PhoneNumber: userPhoneNumber,
 		DisplayName: userDisplayName,
-		DateOfBirth: ,
+		DateOfBirth: userDoB,
+	}
+
+	_, err = userDetails.InsertOne(context.TODO(), registerDetailRecord)
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	// response
