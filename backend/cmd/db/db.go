@@ -6,9 +6,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+// GetDatabase :Return database
 func GetDatabase() (*mongo.Database, error) {
 	// Set client options
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+	clientOptions := options.Client().ApplyURI("mongodb+srv://huyhnc81:Huysamdua1@jusay-gd13q.gcp.mongodb.net/test?retryWrites=true&w=majority")
 
 	// Connect to MongoDB
 	client, err := mongo.Connect(context.TODO(), clientOptions)

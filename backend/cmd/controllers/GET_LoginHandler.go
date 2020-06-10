@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	database "../db"
@@ -13,6 +14,9 @@ import (
 
 // Login :handler for /api/login
 func Login(c *gin.Context) {
+	// email and password
+	userEmail := c.DefaultQuery("email", "")
+	userPassword := c.DefaultQuery("password", "")
 	// get database
 	db, err := database.GetDatabase()
 	if err != nil {
@@ -20,14 +24,17 @@ func Login(c *gin.Context) {
 		return
 	}
 	// check if email exist in database
-	collection := db.Collection("users")
-	var result models.UserLogin
-	err = collection.FindOne(context.TODO(), bson.D{
-		{Key: "email", Value: c.PostForm("email")},
+	collection := db.Collection("user_authenticate")
+	var result models.UserAuthenticate
+
+	err = collection.FindOne(context.TODO(), bson.M{
+		"email": userEmail,
 	}).Decode(&result)
 
+	fmt.Println(result)
+
 	// compare password hash
-	compareErr := bcrypt.CompareHashAndPassword([]byte(result.Password), []byte(c.PostForm("password")))
+	compareErr := bcrypt.CompareHashAndPassword([]byte(result.Password), []byte(userPassword))
 
 	// response
 	if compareErr != nil {
@@ -37,6 +44,7 @@ func Login(c *gin.Context) {
 	} else {
 		c.JSON(200, gin.H{
 			"status": "success",
+			"userId": result.Id,
 		})
 	}
 }

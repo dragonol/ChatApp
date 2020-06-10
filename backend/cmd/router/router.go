@@ -12,8 +12,9 @@ func InitRouter() *gin.Engine {
 
 	router.Use(static.Serve("/", static.LocalFile("./../../frontend/dist", false)))
 
-	router.POST("/api/login", controllers.Login)
+	router.GET("/api/login/", controllers.Login)
 	router.POST("/api/register", controllers.Register)
-	
+	router.POST("/api/update", controllers.UpdateUserDetail)
+
 	return router
 }
