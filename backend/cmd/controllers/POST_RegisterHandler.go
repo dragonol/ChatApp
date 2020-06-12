@@ -4,13 +4,13 @@ import (
 	"context"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"log"
-	"time"
 
 	database "../db"
 	models "../models"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"golang.org/x/crypto/bcrypt"
+	"net/http"
 )
 
 // Register :handler for /api/login
@@ -19,12 +19,6 @@ func Register(c *gin.Context) {
 	userEmail := c.PostForm("email")
 	userPassword := c.PostForm("password")
 	userDisplayName := c.PostForm("displayName")
-	userDoB, err := time.Parse("20060102", c.PostForm("dob"))
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-	userPhoneNumber := c.PostForm("phoneNumber")
 
 	// get database
 	db, err := database.GetDatabase()
@@ -45,7 +39,7 @@ func Register(c *gin.Context) {
 
 	// check if no email found
 	if !result.IsEmpty() {
-		c.JSON(200, gin.H{
+		c.JSON(http.StatusOK, gin.H{
 			"status": "fail",
 		})
 		return
@@ -59,6 +53,7 @@ func Register(c *gin.Context) {
 
 	// create userAuthenticate record
 	registerRecord := models.UserAuthenticate{
+		Id:       primitive.NewObjectID(),
 		Email:    userEmail,
 		Password: passwordHash,
 	}
@@ -73,10 +68,7 @@ func Register(c *gin.Context) {
 	registerDetailRecord := models.UserDetails{
 		Id:          userAuthenticateInsertResult.InsertedID.(primitive.ObjectID),
 		Email:       userEmail,
-		Password:    passwordHash,
-		PhoneNumber: userPhoneNumber,
 		DisplayName: userDisplayName,
-		DateOfBirth: userDoB,
 	}
 
 	_, err = userDetails.InsertOne(context.TODO(), registerDetailRecord)
@@ -85,7 +77,7 @@ func Register(c *gin.Context) {
 	}
 
 	// response
-	c.JSON(200, gin.H{
+	c.JSON(http.StatusOK, gin.H{
 		"status": "success",
 	})
 }
