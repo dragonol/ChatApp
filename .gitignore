@@ -2,3 +2,4 @@ backend/bin
 backend/pkg
 backend/src
 .vs
+.vscode
