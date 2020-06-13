@@ -1,26 +1,25 @@
 package controllers
 
 import (
+	database "../db"
+	"../models"
 	"context"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"golang.org/x/crypto/bcrypt"
 	"log"
 	"net/http"
 	"os"
 	"time"
-
-	database "../db"
-	"../models"
-	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/bson"
-	"golang.org/x/crypto/bcrypt"
 )
 
 // Login :handler for /api/login
 func Login(c *gin.Context) {
 	// email and password
-	userEmail := c.DefaultQuery("email", "")
-	userPassword := c.DefaultQuery("password", "")
+	userEmail := c.PostForm("email")
+	userPassword := c.PostForm("password")
 
 	// get database
 	db, err := database.GetDatabase()
@@ -59,22 +58,30 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	// response on success
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-		"token":  token,
-		"id":     user.Id,
-	})
+	// set cookie
+	expirationTime := time.Now().Add(time.Minute * 15)
+	cookie := http.Cookie{
+		Name:    "token",
+		Value:   token,
+		Expires: expirationTime,
+	}
+	http.SetCookie(c.Writer, &cookie)
+
+	//// response on success
+	//c.JSON(http.StatusOK, gin.H{
+	//	"status": "success",
+	//	"token":  token,
+	//	"id":     user.Id,
+	//})
 }
 
 func CreateToken(userid primitive.ObjectID) (string, error) {
 	var err error
 	//Creating Access Token
-	os.Setenv("ACCESS_SECRET", "jdnfksdmfksd") //this should be in an env file
+	os.Setenv("ACCESS_SECRET", "huy") //this should be in an env file
 	atClaims := jwt.MapClaims{}
 	atClaims["authorized"] = true
 	atClaims["user_id"] = userid
-	atClaims["exp"] = time.Now().Add(time.Minute * 15).Unix()
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
 	token, err := at.SignedString([]byte(os.Getenv("ACCESS_SECRET")))
 	if err != nil {
