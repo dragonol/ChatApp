@@ -1,6 +1,7 @@
 backend/bin
 backend/pkg
 backend/src
+backend/cmd/go_build_server_go.exe 
 .vs
 .vscode
 .idea
