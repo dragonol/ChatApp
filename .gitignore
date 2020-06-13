@@ -3,3 +3,4 @@ backend/pkg
 backend/src
 .vs
 .vscode
+.idea
