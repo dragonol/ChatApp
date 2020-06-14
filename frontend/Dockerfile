@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:current-slim
 
 # create destination directory
 WORKDIR /usr/src/app
