@@ -17,7 +17,23 @@ export const getters = {
 }
 
 export const actions = {
-  login ({ commit }) {
-
+  login ({ commit }, credentials) {
+    return new Promise((resolve, reject) => {
+      const postData = new FormData()
+      postData.append('email', credentials.email)
+      postData.append('password', credentials.password)
+      axios({
+        method: 'post',
+        data: postData,
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
+      }).then((response) => {
+        commit('setUserData', response.data)
+        resolve()
+      }).catch((err) => {
+        reject(err)
+      })
+    })
   }
 }

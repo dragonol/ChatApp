@@ -93,7 +93,7 @@
             </div>
           </form>
 
-          <button @click="index">
+          <button @click="login">
             <p>Sign in</p>
           </button>
         </div>
@@ -227,22 +227,12 @@ export default {
         this.signIn_invalidEmail = true
       } else {
         /* send login content */
-        const postData = new FormData()
-        postData.append('email', this.signIn_email)
-        postData.append('password', this.signIn_password)
-        const self = this
-        axios({
-          method: 'post',
-          url: '/api/login',
-          data: postData,
-          headers: {
-            'content-type': 'multipart/form-data'
-          }
-        }).then(function (response) {
-          if (response.data.status === 'fail') {
-            self.signIn_incorrectField = true
-          } else {
-          }
+        this.$store.dispatch('user/login', {
+          email: this.signIn_email,
+          password: this.signIn_password
+        }).catch((err) => {
+          self.signIn_incorrectField = true
+          console.log(err)
         })
       }
     },
