@@ -29,6 +29,6 @@
     "eslint-plugin-nuxt": ">=0.4.2",
     "jest": "^24.1.0",
     "vue-jest": "^4.0.0-0",
-    "vuetify": "^2.2.33"
+    "vuetify": "^2.6.10"
   }
 }
